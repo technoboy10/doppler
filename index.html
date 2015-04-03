@@ -1,0 +1,46 @@
+<html>
+<head>
+<style type="text/css">
+</style>
+</head>
+<body>
+<script src="doppler.js"></script>
+<script>
+var
+      el = document.documentElement
+    , rfs =
+           el.requestFullScreen
+        || el.webkitRequestFullScreen
+        || el.mozRequestFullScreen
+    ;
+window.addEventListener('click', function() {
+	rfs.call(el);
+});
+window.addEventListener('load', function() {
+	rfs.call(el);
+	var colors = ["#3498db", "#00ffff", "#ffff00", "#ff0000", "#00ff00", "#0000ff"];
+	var threshold = 6;
+	var item = 0;
+	var done;
+	window.doppler.init(function(bandwidth) {
+		if (bandwidth.left > threshold || bandwidth.right > threshold){
+			var diff = (bandwidth.right - bandwidth.left);
+		if (Math.abs(diff) < threshold) {
+			done = 0;
+		}
+		if (diff > 20 && done == 0) {
+			item += 1;
+			item = item % 5;
+			document.body.style.background = colors[item];
+			done = 1;
+
+		} else if (diff < -20 && done == 0) {
+			document.body.style.background = "black";
+		}
+
+
+	}
+	});
+});
+
+</script>
