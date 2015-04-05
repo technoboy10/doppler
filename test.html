@@ -1,0 +1,52 @@
+<html>
+<head>
+<style type="text/css">
+select {
+	font-size: 30px;
+	margin: auto;
+}
+</style>
+</head>
+<body>
+<script src="doppler.js"></script>
+<script>
+window.addEventListener('load', function() {
+	var d = {"a":"Option A: Testing!", "b":"Option B: Awesome", "c":"Option C", "d":"#swag", "e":"Soundwave!", "f":"backtick ftw"};
+	var s = document.getElementById("foo");
+	var threshold = 6;
+	var item = 0;
+	var done;
+	window.doppler.init(function(bandwidth) {
+		if (bandwidth.left > threshold || bandwidth.right > threshold){
+			var diff = (bandwidth.right - bandwidth.left);
+		if (Math.abs(diff) < threshold) {
+			done = 0;
+		}
+		if (diff > 15 && done == 0) {
+			item += 1;
+			item = item % 6;
+			s.value = s.options[item].text;
+			done = 1;
+
+		} else if (diff < -20 && done == 0) {
+			document.getElementById('done').innerHTML = d[s.value];
+			done = 1;
+		}
+
+
+	}
+	});
+});
+
+</script>
+<select id="foo">
+<option>a</option>
+<option>b</option>
+<option>c</option>
+<option>d</option>
+<option>e</option>
+<option>f</option>
+</select>
+<p id="done">You haven't selected anything yet!</p>
+</body>
+</html>
